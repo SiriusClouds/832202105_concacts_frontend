@@ -1,96 +1,196 @@
-# Java Spring Boot Backend Development Coding Standards
+# Front-End Development Code Standards
 
-## 1. General Principles
+## Table of Contents
+1. **General Principles**
+2. **HTML Coding Standards**
+3. **CSS Coding Standards**
+4. **JavaScript Coding Standards**
+5. **Performance Optimization**
+6. **Accessibility**
+7. **Responsive Design**
+8. **Commenting and Documentation**
 
-### 1.1. Code Readability
+---
 
-- **Use meaningful variable, method, and class names**: Names should be descriptive and follow camelCase notation (e.g., `userService`, `calculateTotalAmount`).
-- **Keep methods short and focused**: Each method should perform a single, well-defined task.
-- **Avoid magic numbers and strings**: Use constants instead of hardcoding values directly in the code.
+### 1. General Principles
 
-### 1.2. Consistency
+**a. Consistency**: Maintain a consistent coding style throughout your project.
 
-- **Follow a consistent coding style**: Whether it's indentation, brace placement, or naming conventions, consistency enhances code readability.
-- **Adhere to the project's coding guidelines**: If a set of coding standards is already established, make sure to follow them.
+**b. Readability**: Write clean, well-organized code that is easy to understand and maintain.
 
-### 1.3. Error Handling
+**c. Separation of Concerns**: Keep HTML, CSS, and JavaScript separate as much as possible. Use external stylesheets and scripts.
 
-- **Use custom exceptions**: Define custom exceptions to handle specific error scenarios.
-- **Provide meaningful error messages**: Error messages should be clear and provide enough information for debugging.
+### 2. HTML Coding Standards
 
-## 2. Project Structure
+**a. Doctype Declaration**: Always include the HTML5 doctype at the top of your documents.
+```html
+<!DOCTYPE html>
+```
 
-### 2.1. Package Naming
+**b. Language Attribute**: Specify the language of the document.
+```html
+<html lang="en">
+```
 
-- **Follow a domain-driven design**: Packages should be named according to the domain they represent (e.g., `com.company.project.user`, `com.company.project.payment`).
-- **Keep the main class at the root level**: The main application class should be placed at the top-level package (e.g., `com.company.project.Application`).
+**c. Semantic Markup**: Use semantic HTML5 elements to enhance readability and accessibility.
+```html
+<header>, <main>, <footer>, <article>, <section>
+```
 
-### 2.2. Layering
+**d. Attribute Usage**: Use double quotes for attribute values and maintain a consistent attribute order.
+```html
+<input type="text" placeholder="Enter your name">
+```
 
-- **Controller Layer**: Responsible for handling HTTP requests and responses. Should be placed in the `controller` package.
-- **Service Layer**: Contains business logic. Should be placed in the `service` package.
-- **Repository Layer**: Interacts with the database. Should be placed in the `repository` package.
-- **Model/Entity Layer**: Defines the data structure. Should be placed in the `model` or `entity` package.
+**e. Indentation and Formatting**: Use 2 spaces for indentation and keep your code formatted for readability.
+```html
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+```
 
-## 3. Coding Practices
+**f. Naming Conventions**: Use lowercase, hyphen-separated names for IDs and classes.
+```html
+<div id="main-content" class="container-fluid">
+```
 
-### 3.1. Controller Layer
+**g. Forms**: Use `<form>` elements with appropriate `action` and `method` attributes. Wrap labels and inputs in `<div class="form-group">` for better styling.
+```html
+<form action="/submit" method="post">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" class="form-control">
+  </div>
+  <!-- Add more form fields as needed -->
+</form>
+```
 
-- **Use `@RestController` for RESTful controllers**: This annotation combines `@Controller` and `@ResponseBody`.
-- **Map HTTP verbs to methods**: Use `@GetMapping`, `@PostMapping`, `@PutMapping`, and `@DeleteMapping` for respective HTTP operations.
-- **Return appropriate HTTP status codes**: Use `ResponseEntity` to customize responses.
+### 3. CSS Coding Standards
 
-### 3.2. Service Layer
+**a. External Stylesheets**: Use external CSS files to keep styles separate from HTML.
+```html
+<link rel="stylesheet" href="styles.css">
+```
 
-- **Keep business logic in services**: Controllers should be thin and delegate work to services.
-- **Use `@Service` annotation**: This indicates that the class is a Spring service.
-- **Transaction management**: Use `@Transactional` for methods that require transaction management.
+**b. Naming Conventions**: Use camelCase for class names and IDs. Avoid using overly specific selectors.
+```css
+.main-content {
+  /* Styles here */
+}
+```
 
-### 3.3. Repository Layer
+**c. Specificity**: Keep CSS specificity low to ensure maintainability.
+```css
+/* Good */
+.button {
+  background-color: blue;
+}
 
-- **Use Spring Data JPA**: It simplifies database interactions.
-- **Interface naming**: Repository interfaces should follow the naming convention `EntityNameRepository` (e.g., `UserRepository`).
-- **Custom query methods**: Use method names to define queries (e.g., `findByUsername`).
+/* Bad */
+div.button.submit-button {
+  background-color: blue;
+}
+```
 
-### 3.4. Model/Entity Layer
+**d. Responsive Design**: Use media queries to create responsive layouts.
+```css
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
+```
 
-- **Use JPA annotations**: Annotate entities with `@Entity`, `@Table`, `@Id`, etc.
-- **Define relationships**: Use `@OneToMany`, `@ManyToOne`, `@OneToOne`, and `@ManyToMany` to define relationships between entities.
-- **DTOs (Data Transfer Objects)**: Use DTOs to transfer data between layers, especially when exposing data via APIs.
+### 4. JavaScript Coding Standards
 
-## 4. Testing
+**a. External Scripts**: Use external JavaScript files to keep scripts separate from HTML.
+```html
+<script src="scripts.js"></script>
+```
 
-### 4.1. Unit Tests
+**b. Variable Naming**: Use camelCase for variable and function names.
+```javascript
+let myVariable = 10;
+function myFunction() {
+  // Code here
+}
+```
 
-- **Write tests for each service method**: Use JUnit and Mockito for mocking dependencies.
-- **Keep tests simple and focused**: Each test should test a single behavior.
+**c. Avoid Inline Scripts**: Avoid using inline JavaScript within HTML tags.
+```html
+<!-- Bad -->
+<button onclick="alert('Hello!')">Click me</button>
 
-### 4.2. Integration Tests
+<!-- Good -->
+<button id="myButton">Click me</button>
+<script>
+  document.getElementById('myButton').addEventListener('click', function() {
+    alert('Hello!');
+  });
+</script>
+```
 
-- **Test the interaction between components**: Ensure that services, repositories, and controllers work together as expected.
-- **Use Spring Boot Test**: It provides annotations like `@SpringBootTest` for integration testing.
+**d. Use Strict Mode**: Use strict mode to catch common coding mistakes.
+```javascript
+'use strict';
+```
 
-## 5. Security
+### 5. Performance Optimization
 
-### 5.1. Input Validation
+**a. Minimize HTTP Requests**: Combine CSS and JavaScript files to reduce the number of HTTP requests.
 
-- **Validate user inputs**: Use JSR 303/JSR 380 annotations (e.g., `@NotNull`, `@Size`) to validate inputs.
-- **Sanitize inputs**: Prevent SQL injection, XSS, and other vulnerabilities by sanitizing inputs.
+**b. Minification**: Minify CSS, JavaScript, and HTML to reduce file sizes.
 
-### 5.2. Authentication and Authorization
+**c. Caching**: Use caching strategies to minimize reload times.
 
-- **Use Spring Security**: It provides a comprehensive security framework.
-- **JWT (JSON Web Tokens)**: Use JWT for stateless authentication.
-- **Role-based access control**: Define roles and permissions to restrict access to certain endpoints.
+**d. Image Optimization**: Compress images to improve load times.
 
-## 6. Documentation
+### 6. Accessibility
 
-### 6.1. API Documentation
+**a. ARIA Roles**: Use ARIA roles to enhance accessibility when necessary.
+```html
+<div role="navigation">
+  <!-- Navigation links -->
+</div>
+```
 
-- **Use Swagger/OpenAPI**: Generate and maintain API documentation automatically.
-- **Provide examples**: Include example requests and responses in the documentation.
+**b. Alt Attributes**: Always provide `alt` attributes for images.
+```html
+<img src="image.jpg" alt="Description of image">
+```
 
-### 6.2. Code Comments
+**c. Keyboard Navigation**: Ensure interactive elements are accessible via keyboard.
 
-- **Write self-documenting code**: Code should be clear enough to understand without comments.
-- **Use comments to explain complexity**: When necessary, use comments to explain complex logic or algorithms.
+### 7. Responsive Design
+
+**a. Meta Viewport**: Use the `viewport` meta tag to ensure your pages are responsive.
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+```
+
+**b. Flexbox and Grid**: Use Flexbox and CSS Grid for creating flexible and responsive layouts.
+
+### 8. Commenting and Documentation
+
+**a. Explanatory Comments**: Comment your code to explain complex sections, hacks, or workarounds.
+```html
+<!-- Main navigation starts here -->
+<nav>
+  <!-- Navigation links -->
+</nav>
+<!-- Main navigation ends here -->
+```
+
+**b. TODO Comments**: Use `TODO` comments for items that need to be addressed later.
+```html
+<!-- TODO: Add responsive styles for this section -->
+```
+
+**c. JavaScript Comments**: Use comments in JavaScript to explain functions, logic, and complex operations.
+```javascript
+// Function to calculate the sum of two numbers
+function calculateSum(a, b) {
+  return a + b;
+}
+```
