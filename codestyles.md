@@ -1,34 +1,30 @@
-# HTML编码规范
-> 来源：[bootstrap代码规范](https://codeguide.bootcss.com/) <br/>
-> 来源：[百度EFE编码规范](https://github.com/ecomfe/spec) <br/>
+# HTML Coding Standards
+> Source: [Bootstrap Code Guidelines](https://codeguide.bootcss.com/) <br/>
+> Source: [Baidu EFE Coding Standards](https://github.com/ecomfe/spec) <br/>
 
 <br/>
 
-　　[**目录**]()
+**Table of Contents**
 
-[1 属性顺序](#1-属性顺序)
+1. [Attribute Order](#1-attribute-order)
+2. [Class Naming](#2-class-naming)
+3. [ID Naming](#3-id-naming)
+4. [Name Naming](#4-name-naming)
 
-[2 class命名](#2-class命名)
-
-[3 id命名](#3-id命名)
-
-[4 name命名](#4-name命名)
-
-
-## 1. 属性顺序
-　　HTML 属性应当按照以下给出的顺序依次排列，确保代码的易读性。
+## 1. Attribute Order
+HTML attributes should be arranged in the following order to ensure code readability:
 * `class`
-* `id`，`name`
+* `id`, `name`
 * `data-*`
-* `src`，`for`，`type`，`href`，`value`
-* `title`，`alt`
-* `role`，`aria-*`
+* `src`, `for`, `type`, `href`, `value`
+* `title`, `alt`
+* `role`, `aria-*`
 
-　　class 用于标识高度可复用组件，因此应该排在首位。
+`class` should come first as it identifies highly reusable components.
 
-　　id 用于标识具体组件，应当谨慎使用（例如，页面内的书签），因此排在第二位。
+`id` should be used cautiously (e.g., for bookmarks within a page) and thus comes second.
 
-示例：
+Example:
 ```html
 <a class="..." id="..." data-toggle="modal" href="#">
   Example link
@@ -41,13 +37,13 @@
 
 <br/>
 
-## 2. class命名
-* `class` 必须单词全字母小写，单词间以 `-` 分隔；
-* `class` 必须代表相应模块或部件的内容或功能，不得以样式信息进行命名；
-* 避免过度任意的简写。`.btn` 代表 `button`，但是 `.s` 不能表达任何意思；
-* 基于最近的父 class 或基本（base） class 作为新 class 的前缀。
+## 2. Class Naming
+* `class` names must use all lowercase letters, with words separated by hyphens (`-`);
+* `class` names must represent the content or functionality of the respective module or component, and should not be named based on stylistic information;
+* Avoid excessively arbitrary abbreviations. `.btn` represents `button`, but `.s` does not convey any meaning;
+* Prefix new classes based on the closest parent class or base class.
 
-示例：
+Example:
 ```html
 <!-- good -->
 <div class="sidebar"></div>
@@ -55,16 +51,16 @@
 <!-- bad -->
 <div class="left"></div>
 ```
-　　常用命名可参考[alloyteam](http://www.alloyteam.com/2011/10/css-on-team-naming/)。
+For common naming conventions, refer to [AlloyTeam](http://www.alloyteam.com/2011/10/css-on-team-naming/).
 
 <br/>
 
-## 3. id命名
-* 元素 `id` 必须保证页面唯一；
-* `id` 建议单词全字母小写，单词间以 `-` 分隔。同项目必须保持风格一致。
-*  `id`、`class` 命名，在避免冲突并描述清楚的前提下尽可能短。
+## 3. ID Naming
+* Element `id` must be unique within the page;
+* It is recommended that `id` names use all lowercase letters, with words separated by hyphens (`-`). Consistency must be maintained within the same project.
+* `id` and `class` names should be as short as possible while avoiding conflicts and providing clear description.
 
-示例：
+Example:
 ```html
 <!-- good -->
 <div id="nav"></div>
@@ -84,26 +80,26 @@
 
 <br/>
 
-## 4. name命名
-* 同一页面，应避免使用相同的 `name` 与 `id`。
-* `name` 一般与后端model中的字段名命名规则保持一致。
-  * 例如Java使用驼峰命名法，Python使用下划线 `_` 连接两个小写单词。
+## 4. Name Naming
+* On the same page, avoid using the same `name` and `id`.
+* `name` should generally follow the naming conventions of fields in the backend model.
+  * For example, Java uses camelCase, while Python uses underscores (`_`) to connect two lowercase words.
 
-解释：
+Explanation:
 
-　　IE 浏览器会混淆元素的 `id` 和 `name` 属性， `document.getElementById` 可能获得不期望的元素。所以在对元素的 `id` 与 `name` 属性的命名需要非常小心。
+IE browsers can confuse elements' `id` and `name` attributes, and `document.getElementById` might retrieve an unexpected element. Therefore, it is crucial to be cautious when naming elements' `id` and `name` attributes.
 
-　　一个比较好的实践是，为 `id` 和 `name` 使用不同的命名法。
+A good practice is to use different naming conventions for `id` and `name`.
 
-示例：
+Example:
 ```html
 <input name="foo">
 <div id="foo"></div>
 <script>
-// IE6 将显示 INPUT
+// IE6 will display INPUT
 alert(document.getElementById('foo').tagName);
 </script>
-````
+```
 
 <br/>
 <br/>
