@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{commons/commons::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!--分页 active表示高亮显示-->
+        <div th:replace="~{commons/commons::sidebar(active='/book/list.html')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <form th:action="@{/getBook}" method="post">
+                <div>
+                    <h2>书籍仓库</h2>
+                    <input type="text" name="bookName" placeholder="Search" aria-label="Search">
+                    <button type="submit" class="btn btn-sm btn-primary">搜索</button>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>书籍编号</th>
+                        <th>书名</th>
+                        <th>出版社</th>
+                        <th>作者</th>
+                        <th>ISBN</th>
+                        <th>类型</th>
+                        <th>价格</th>
+                        <th>折扣</th>
+                        <th>状态</th>
+                        <th>库存</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="book:${books}">
+                        <td th:text="${book.getBookId()}"></td>
+                        <td th:text="${book.getBookName()}"></td>
+                        <td th:text="${book.getPress()}"></td>
+                        <td th:text="${book.getAuthor()}"></td>
+                        <td th:text="${book.getISBN()}"></td>
+                        <td th:text="${book.getType()}"></td>
+                        <td th:text="${book.getPrice()}"></td>
+                        <td th:text="${book.getDiscount()}"></td>
+                        <td th:text="${book.getIsSale() == '1'?'上架':'下架'}"></td>
+                        <td th:text="${book.getQuantity()}"></td>
+                        <td>
+                            <!--提取session最好加上session.*-->
+                            <div th:switch="${session.user}">
+                                <a th:href="@{/book/{id}(id=${book.getBookId()})}" class="btn btn-sm btn-primary" th:case="admin">修改</a>
+                                <a>
+                                    <button th:href="@{/book/buy/{id}(id=${book.getBookId()})}" class="btn btn-sm btn-primary" th:case="user">购买</button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="asserts/js/popper.min.js"></script>
+<script type="text/javascript" src="asserts/js/bootstrap.min.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="asserts/js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="asserts/js/Chart.min.js"></script>
+<script>
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            datasets: [{
+                data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false
+                    }
+                }]
+            },
+            legend: {
+                display: false,
+            }
+        }
+    });
+</script>
+
+</body>
+
+</html>

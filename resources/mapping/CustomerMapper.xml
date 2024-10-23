@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.god.mapper.CustomerMapper">
+    <resultMap id="customerResultMap" type="com.god.entity.Customer">
+        <!--     property指定属性，column指定根据字段联查，ofType指定集合泛型类型   -->
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="deposit" jdbcType="DOUBLE" property="deposit" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="isMember" property="isMember" jdbcType="VARCHAR"/>
+        <result property="timestamp" column="timestamp" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <!--编辑用户信息-->
+    <update id="update" parameterType="com.god.entity.Customer">
+        UPDATE customer
+        SET username = #{username},telephone = #{telephone},address = #{address}, deposit = #{deposit}, password = #{password}, isMember = #{isMember}
+        WHERE account = #{account}
+    </update>
+    <!--充值-->
+    <update id="recharge" parameterType="com.god.entity.Customer">
+        UPDATE customer
+        SET
+        <trim suffixOverrides="," >
+            <if test="deposit != null" >
+                deposit = #{deposit},
+            </if>
+            <if test="isMember != null" >
+                isMember = #{isMember},
+            </if>
+        </trim>
+        WHERE account = #{account}
+    </update>
+    <!--查询用户信息-->
+    <select id="getUser" resultType="com.god.entity.Customer">
+        select * from customer where account = #{account}
+    </select>
+    <!--下单-->
+    <update id="settleMoney" parameterType="com.god.entity.Customer">
+        update customer
+        set deposit = #{deposit}
+        where account = #{account}
+    </update>
+    <!--返回所有用户信息-->
+    <select id="selectAll"  resultType="com.god.entity.Book">
+        select * from customer
+    </select>
+    <!--增加用户信息-->
+    <insert id="save" parameterType="com.god.entity.Customer" >
+        insert into customer
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="account != null" >
+                account,
+            </if>
+            <if test="username != null" >
+                username,
+            </if>
+            <if test="telephone != null" >
+                telephone,
+            </if>
+            <if test="address != null" >
+                address,
+            </if>
+            <if test="deposit != null" >
+                deposit,
+            </if>
+            <if test="password != null" >
+                password,
+            </if>
+            <if test="isMember != null" >
+                isMember,
+            </if>
+            <if test="timestamp != null" >
+                timestamp,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="account != null" >
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null" >
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null" >
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null" >
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="deposit != null" >
+                #{deposit,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="isMember != null" >
+                #{isMember,jdbcType=VARCHAR},
+            </if>
+            <if test="timestamp != null" >
+                #{timestamp,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

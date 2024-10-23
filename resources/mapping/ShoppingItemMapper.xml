@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.god.mapper.ShoppingItemMapper">
+
+    <select id="getBookById" resultType="com.god.entity.Book">
+        select * from book where bookId = #{bookId}
+    </select>
+    <select id="getUser" resultType="com.god.entity.Customer">
+        select * from customer where account = #{account}
+    </select>
+    <select id="getList" resultMap="shoppingItem">
+        select * from shoppingItem
+        where
+        <if test="account != null" >
+            account = #{account}
+        </if>
+    </select>
+        <select id="getListByListId" resultMap="shoppingItem">
+        select * from shoppingItem
+        where
+        <if test="listId != null" >
+            listId = #{listId}
+        </if>
+    </select>
+
+
+    <!--计算金额（废弃方案）
+    <select id="billing" resultMap="ShoppingList">
+        select SUM(1.0*buyingCount)
+        from shoppingList
+        where account = #{account}
+    </select>
+    -->
+    <delete id="deleteList" parameterType="com.god.entity.ShoppingItem">
+        DELETE FROM shoppingItem
+        WHERE listId = #{listId}
+    </delete>
+
+    <update id="updateList" parameterType="com.god.entity.ShoppingItem">
+        UPDATE shoppingItem
+        SET isBuy = 1
+        WHERE account = #{account}
+    </update>
+
+    <resultMap id="shoppingItem" type="com.god.entity.ShoppingItem">
+        <result property="listId" column="listId" jdbcType="INTEGER"/>  <!--不要写成javaType-->
+        <result property="buyingCount" column="buyingCount" jdbcType="INTEGER"/>
+        <result property="bookId" column="bookId" jdbcType="INTEGER"/>
+        <result property="timestamp" column="timestamp" jdbcType="TIMESTAMP"/>
+        <result property="account" column="account" jdbcType="VARCHAR"/>
+        <result property="isBuy" column="isBuy" jdbcType="VARCHAR"/>
+        <!--Book 对象-->
+        <association property="book" column="bookId" javaType="com.god.entity.Book" select="getBookById"/>
+        <!--Customer 对象-->
+        <association property="customer" column="account" javaType="com.god.entity.Customer" select="getUser"/>
+    </resultMap>
+
+    <insert id="addList" parameterMap="AddShoppingItem">
+        INSERT INTO shoppingItem (buyingCount, timestamp, bookId, account)
+        VALUES (#{buyingCount}, #{timestamp}, #{bookId}, #{account})
+    </insert>
+
+    <parameterMap id="AddShoppingItem" type="com.god.entity.ShoppingItem">
+        <parameter property="listId"/>  <!--不要写成javaType-->
+        <parameter property="buyingCount"/>
+        <parameter property="timestamp"/>
+        <!--Book 对象-->
+        <parameter property="bookId"/>
+        <!--Customer 对象-->
+        <parameter property="account"/>
+    </parameterMap>
+
+</mapper>

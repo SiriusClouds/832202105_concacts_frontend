@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>[[#{register.btn}]]</title>
+        <!-- Bootstrap core CSS -->
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link th:href="@{/css/signin.css}" rel="stylesheet">
+    </head>
+
+    <body class="text-center">
+        <form class="form-signin" th:action="@{/user/register}">
+            <img class="mb-4" th:src="@{/img/bootstrap-solid.svg}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal" th:text="#{register.tip}"></h1>
+
+            <label>
+                <input type="text" name="username" class="form-control" th:placeholder="#{register.username}" required="" autofocus="">
+                <input type="text" name="telephone" class="form-control" th:placeholder="#{register.telephone}" required="">
+                <input type="text" name="address" class="form-control" th:placeholder="#{register.address}" required="">
+                <input type="text" name="deposit" class="form-control" th:placeholder="#{register.deposit}" >
+                <input type="text" name="password" class="form-control" th:placeholder="#{register.password}" required="">
+            </label>
+            <div>
+                <a class="btn btn-sm" th:href="@{/index.html}">[[#{login.return}]]</a>
+                <p><br></p>
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit" >[[#{register.btn}]]</button>
+            <p class="mt-5 mb-3 text-muted">© 2024-2025</p>
+            <a class="btn btn-sm" th:href="@{/register.html(l='zh_CN')}">中文</a>
+            <a class="btn btn-sm" th:href="@{/register.html(l='en_US')}">English</a>
+        </form>
+
+    </body>
+
+</html>

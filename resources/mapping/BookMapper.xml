@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.god.mapper.BookMapper">
+    <resultMap id="BookResultMap" type="com.god.entity.Book">
+        <id property="bookId" column="bookId" jdbcType="INTEGER"/>
+        <result column="bookName" jdbcType="VARCHAR" property="bookName" />
+        <result column="press" jdbcType="VARCHAR" property="press" />
+        <result column="author" jdbcType="VARCHAR" property="author" />
+        <result column="ISBN" jdbcType="VARCHAR" property="ISBN" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="price" jdbcType="DOUBLE" property="price" />
+        <result column="discount" jdbcType="DOUBLE" property="discount" />
+        <result column="isSale"  property="isSale" jdbcType="VARCHAR"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="date" jdbcType="DATE" property="date" />
+    </resultMap>
+    <!--查询书籍信息 方法不可以同名-->
+    <select id="getBookById" resultType="com.god.entity.Book">
+        select * from book where bookId = #{bookId}
+    </select>
+    <select id="getBookByName" resultType="com.god.entity.Book">
+        select * from book where bookName LIKE CONCAT('%',#{bookName},'%')
+    </select>
+    <!--删除用户信息-->
+    <delete id="delete" parameterType="com.god.entity.Book">
+        delete from book where bookName= #{bookName}
+    </delete>
+    <!-- 更新书籍信息-->
+    <update id="update" parameterType="com.god.entity.Book">
+        UPDATE book
+        SET bookName = #{bookName},press = #{press},author = #{author}, ISBN = #{ISBN}, type = #{type}, price = #{price}, discount = #{discount}, isSale = #{isSale},quantity = #{quantity}
+        WHERE bookId = #{bookId}
+    </update>
+    <update id="buy" parameterType="com.god.entity.Book">
+        UPDATE book
+        SET  quantity = #{quantity}
+        WHERE bookId = #{bookId}
+    </update>
+    <!--书籍信息-->
+    <select id="selectAll"  resultMap="BookResultMap">
+        select * from book
+    </select>
+
+    <!--增加书籍信息-->
+    <insert id="save" parameterType="com.god.entity.Book" >
+        insert into book
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="bookId != null" >
+                bookId,
+            </if>
+            <if test="bookName != null" >
+                bookName,
+            </if>
+            <if test="press != null" >
+                press,
+            </if>
+            <if test="author != null" >
+                author,
+            </if>
+            <if test="ISBN != null" >
+                ISBN,
+            </if>
+            <if test="type != null" >
+                `type`,
+            </if>
+            <if test="price != null" >
+                price,
+            </if>
+            <if test="discount != null" >
+                discount,
+            </if>
+            <if test="isSale != null" >
+                isSale,
+            </if>
+            <if test="quantity != null" >
+                quantity,
+            </if>
+            <if test="date != null" >
+                date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="bookId != null" >
+                #{bookId,jdbcType=INTEGER},
+            </if>
+            <if test="bookName != null" >
+                #{bookName,jdbcType=VARCHAR},
+            </if>
+            <if test="press != null" >
+                #{press,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null" >
+                #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="ISBN != null" >
+                #{ISBN,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null" >
+                #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="discount != null" >
+                #{discount,jdbcType=DOUBLE},
+            </if>
+            <if test="isSale != null" >
+                #{isSale,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null" >
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="date != null" >
+                #{date,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>
