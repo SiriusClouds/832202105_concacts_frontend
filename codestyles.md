@@ -1,105 +1,96 @@
-# HTML Coding Standards
-> Source: [Bootstrap Code Guidelines](https://codeguide.bootcss.com/) <br/>
-> Source: [Baidu EFE Coding Standards](https://github.com/ecomfe/spec) <br/>
+# Java Spring Boot Backend Development Coding Standards
 
-<br/>
+## 1. General Principles
 
-**Table of Contents**
+### 1.1. Code Readability
 
-1. [Attribute Order](#1-attribute-order)
-2. [Class Naming](#2-class-naming)
-3. [ID Naming](#3-id-naming)
-4. [Name Naming](#4-name-naming)
+- **Use meaningful variable, method, and class names**: Names should be descriptive and follow camelCase notation (e.g., `userService`, `calculateTotalAmount`).
+- **Keep methods short and focused**: Each method should perform a single, well-defined task.
+- **Avoid magic numbers and strings**: Use constants instead of hardcoding values directly in the code.
 
-## 1. Attribute Order
-HTML attributes should be arranged in the following order to ensure code readability:
-* `class`
-* `id`, `name`
-* `data-*`
-* `src`, `for`, `type`, `href`, `value`
-* `title`, `alt`
-* `role`, `aria-*`
+### 1.2. Consistency
 
-`class` should come first as it identifies highly reusable components.
+- **Follow a consistent coding style**: Whether it's indentation, brace placement, or naming conventions, consistency enhances code readability.
+- **Adhere to the project's coding guidelines**: If a set of coding standards is already established, make sure to follow them.
 
-`id` should be used cautiously (e.g., for bookmarks within a page) and thus comes second.
+### 1.3. Error Handling
 
-Example:
-```html
-<a class="..." id="..." data-toggle="modal" href="#">
-  Example link
-</a>
+- **Use custom exceptions**: Define custom exceptions to handle specific error scenarios.
+- **Provide meaningful error messages**: Error messages should be clear and provide enough information for debugging.
 
-<input class="form-control" type="text">
+## 2. Project Structure
 
-<img src="..." alt="...">
-```
+### 2.1. Package Naming
 
-<br/>
+- **Follow a domain-driven design**: Packages should be named according to the domain they represent (e.g., `com.company.project.user`, `com.company.project.payment`).
+- **Keep the main class at the root level**: The main application class should be placed at the top-level package (e.g., `com.company.project.Application`).
 
-## 2. Class Naming
-* `class` names must use all lowercase letters, with words separated by hyphens (`-`);
-* `class` names must represent the content or functionality of the respective module or component, and should not be named based on stylistic information;
-* Avoid excessively arbitrary abbreviations. `.btn` represents `button`, but `.s` does not convey any meaning;
-* Prefix new classes based on the closest parent class or base class.
+### 2.2. Layering
 
-Example:
-```html
-<!-- good -->
-<div class="sidebar"></div>
+- **Controller Layer**: Responsible for handling HTTP requests and responses. Should be placed in the `controller` package.
+- **Service Layer**: Contains business logic. Should be placed in the `service` package.
+- **Repository Layer**: Interacts with the database. Should be placed in the `repository` package.
+- **Model/Entity Layer**: Defines the data structure. Should be placed in the `model` or `entity` package.
 
-<!-- bad -->
-<div class="left"></div>
-```
-For common naming conventions, refer to [AlloyTeam](http://www.alloyteam.com/2011/10/css-on-team-naming/).
+## 3. Coding Practices
 
-<br/>
+### 3.1. Controller Layer
 
-## 3. ID Naming
-* Element `id` must be unique within the page;
-* It is recommended that `id` names use all lowercase letters, with words separated by hyphens (`-`). Consistency must be maintained within the same project.
-* `id` and `class` names should be as short as possible while avoiding conflicts and providing clear description.
+- **Use `@RestController` for RESTful controllers**: This annotation combines `@Controller` and `@ResponseBody`.
+- **Map HTTP verbs to methods**: Use `@GetMapping`, `@PostMapping`, `@PutMapping`, and `@DeleteMapping` for respective HTTP operations.
+- **Return appropriate HTTP status codes**: Use `ResponseEntity` to customize responses.
 
-Example:
-```html
-<!-- good -->
-<div id="nav"></div>
-<!-- bad -->
-<div id="navigation"></div>
+### 3.2. Service Layer
 
-<!-- good -->
-<p class="comment"></p>
-<!-- bad -->
-<p class="com"></p>
+- **Keep business logic in services**: Controllers should be thin and delegate work to services.
+- **Use `@Service` annotation**: This indicates that the class is a Spring service.
+- **Transaction management**: Use `@Transactional` for methods that require transaction management.
 
-<!-- good -->
-<span class="author"></span>
-<!-- bad -->
-<span class="red"></span>
-```
+### 3.3. Repository Layer
 
-<br/>
+- **Use Spring Data JPA**: It simplifies database interactions.
+- **Interface naming**: Repository interfaces should follow the naming convention `EntityNameRepository` (e.g., `UserRepository`).
+- **Custom query methods**: Use method names to define queries (e.g., `findByUsername`).
 
-## 4. Name Naming
-* On the same page, avoid using the same `name` and `id`.
-* `name` should generally follow the naming conventions of fields in the backend model.
-  * For example, Java uses camelCase, while Python uses underscores (`_`) to connect two lowercase words.
+### 3.4. Model/Entity Layer
 
-Explanation:
+- **Use JPA annotations**: Annotate entities with `@Entity`, `@Table`, `@Id`, etc.
+- **Define relationships**: Use `@OneToMany`, `@ManyToOne`, `@OneToOne`, and `@ManyToMany` to define relationships between entities.
+- **DTOs (Data Transfer Objects)**: Use DTOs to transfer data between layers, especially when exposing data via APIs.
 
-IE browsers can confuse elements' `id` and `name` attributes, and `document.getElementById` might retrieve an unexpected element. Therefore, it is crucial to be cautious when naming elements' `id` and `name` attributes.
+## 4. Testing
 
-A good practice is to use different naming conventions for `id` and `name`.
+### 4.1. Unit Tests
 
-Example:
-```html
-<input name="foo">
-<div id="foo"></div>
-<script>
-// IE6 will display INPUT
-alert(document.getElementById('foo').tagName);
-</script>
-```
+- **Write tests for each service method**: Use JUnit and Mockito for mocking dependencies.
+- **Keep tests simple and focused**: Each test should test a single behavior.
 
-<br/>
-<br/>
+### 4.2. Integration Tests
+
+- **Test the interaction between components**: Ensure that services, repositories, and controllers work together as expected.
+- **Use Spring Boot Test**: It provides annotations like `@SpringBootTest` for integration testing.
+
+## 5. Security
+
+### 5.1. Input Validation
+
+- **Validate user inputs**: Use JSR 303/JSR 380 annotations (e.g., `@NotNull`, `@Size`) to validate inputs.
+- **Sanitize inputs**: Prevent SQL injection, XSS, and other vulnerabilities by sanitizing inputs.
+
+### 5.2. Authentication and Authorization
+
+- **Use Spring Security**: It provides a comprehensive security framework.
+- **JWT (JSON Web Tokens)**: Use JWT for stateless authentication.
+- **Role-based access control**: Define roles and permissions to restrict access to certain endpoints.
+
+## 6. Documentation
+
+### 6.1. API Documentation
+
+- **Use Swagger/OpenAPI**: Generate and maintain API documentation automatically.
+- **Provide examples**: Include example requests and responses in the documentation.
+
+### 6.2. Code Comments
+
+- **Write self-documenting code**: Code should be clear enough to understand without comments.
+- **Use comments to explain complexity**: When necessary, use comments to explain complex logic or algorithms.
